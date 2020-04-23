@@ -1,5 +1,10 @@
 {
     "name": "magneto",
     "description": "programming language",
-    "license": "MIT"
+    "author": "Danilo Lekovic",
+    "license": "MIT",
+    "main": "./src/magneto.mjs",
+    "scripts": {
+        "run": "node --experimental-modules src/lexer.mjs"
+    }
 }
