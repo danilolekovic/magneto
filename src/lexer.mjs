@@ -32,7 +32,7 @@ export class Lexer {
 	}
 
 	isNumber(char) {
-        char = char.charCodeAt(0)
+        char = char.charCodeAt(0);
 		return char >= 48 && char <= 57;
 	}
 
@@ -52,7 +52,6 @@ export class Lexer {
 	}
 
     isAlphaNum(char) {
-        char = char.charCodeAt(0)
         return this.isNumber(char) || this.isAlpha(char);
     }
 
@@ -85,8 +84,17 @@ export class Lexer {
                 value = '/';
                 this.position++;
                 break;
+            case '=':
+                type = TokenType.EQ;
+                value = '=';
+                this.position++;
+                break;
+            case '\n':
+                type = TokenType.NEWLINE;
+                value = '\n';
+                this.position++;
+                break;
             default:
-                // digits
                 if (this.isNumber(this.current())) {
                     type = TokenType.DIGIT;
                     value += this.current();
@@ -96,6 +104,40 @@ export class Lexer {
                         value += this.current();
                         this.position++;
                     }
+                } else if (this.isAlpha(this.current())) {
+                    type = TokenType.IDENT;
+                    value += this.current();
+                    this.position++;
+                    
+                    while (this.isAlphaNum(this.current())) {
+                        value += this.current();
+                        this.position++;
+                    }
+
+                    switch (value) {
+                        case "if":
+                            type = TokenType.IF;
+                            break;
+                        case "else":
+                            type = TokenType.ELSE;
+                            break;
+                        case "elsif":
+                            type = TokenType.ELSIF;
+                            break;
+                        case "let":
+                            type = TokenType.LET;
+                            break;
+                        case "def":
+                            type = TokenType.DEF;
+                            break;
+                    }
+                } else if (this.isWS(this.current())) {
+                    while (this.isWS(this.current())) {
+                        this.position++;
+                    }
+
+                    type = TokenType.WS;
+                    value = "WS";
                 }
         }
 
@@ -103,7 +145,7 @@ export class Lexer {
     }
 };
 
-let lexer = new Lexer("123");
+let lexer = new Lexer("def a = 123");
 var tokens = [];
 var token = lexer.tokenize();
 
