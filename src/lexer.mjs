@@ -163,7 +163,31 @@ export class Lexer {
                 break;
             case '\n':
                 type = TokenType.NEWLINE;
-                value = '\n';
+                value = "\\n";
+                this.position++;
+                break;
+            case '\"':
+                type = TokenType.STRING;
+                value = "";
+                this.position++;
+
+                while (this.current() != '\"') {
+                    value += this.current();
+                    this.position++;
+                }
+
+                this.position++;
+                break;
+            case '\'':
+                type = TokenType.STRING;
+                value = "";
+                this.position++;
+
+                while (this.current() != '\'') {
+                    value += this.current();
+                    this.position++;
+                }
+
                 this.position++;
                 break;
             default:
@@ -285,7 +309,7 @@ export class Lexer {
     }
 };
 
-let lexer = new Lexer("def Const = 123");
+let lexer = new Lexer("def Const = \"Test\"\n");
 var tokens = [];
 var token = lexer.tokenize();
 

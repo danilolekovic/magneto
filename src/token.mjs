@@ -71,8 +71,8 @@
     DIV: "Divide",
     POW: "Power", // todo
     MOD: "Modulus",
-    QUOTE: "\"",
-    NEWLINE: "\n",
+    STRING: "String",
+    NEWLINE: "Newline",
     WS: "Whitespace",
     EOF: "End of File"
  };
