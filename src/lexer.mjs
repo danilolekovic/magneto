@@ -89,11 +89,17 @@ export class Lexer {
                 value = '<';
                 this.position++;
 
-                if (this.lookAhead() == '=') {
+                if (this.current() == '=') {
                     type = TokenType.LTE;
                     value = "<=";
                     this.position++;
-                } else if (this.lookAhead() == '<') {
+
+                    if (this.current() == '>') {
+                        type = TokenType.COMB_COMP;
+                        value = "<=>";
+                        this.position++;
+                    }
+                } else if (this.current() == '<') {
                     type = TokenType.LSTREAM;
                     value = "<<";
                     this.position++;
@@ -104,7 +110,7 @@ export class Lexer {
                 value = '>';
                 this.position++;
 
-                if (this.lookAhead() == '=') {
+                if (this.current() == '=') {
                     type = TokenType.GTE;
                     value = ">=";
                     this.position++;
@@ -120,7 +126,7 @@ export class Lexer {
                 value = '=';
                 this.position++;
 
-                if (this.lookAhead() == '=') {
+                if (this.current() == '=') {
                     type = TokenType.EQ;
                     value = "==";
                     this.position++;
@@ -176,7 +182,7 @@ export class Lexer {
                 value = '|';
                 this.position++;
 
-                if (this.lookAhead() == '|') {
+                if (this.current() == '|') {
                     type = TokenType.OR;
                     value = "||";
                     this.position++;
@@ -187,7 +193,7 @@ export class Lexer {
                 value = '&';
                 this.position++;
 
-                if (this.lookAhead() == '&') {
+                if (this.current() == '&') {
                     type = TokenType.AND;
                     value = "&&";
                     this.position++;
@@ -341,7 +347,7 @@ export class Lexer {
     }
 };
 
-let lexer = new Lexer("def Const = \"Test\"\n");
+let lexer = new Lexer("x <=> 5\n");
 var tokens = [];
 var token = lexer.tokenize();
 

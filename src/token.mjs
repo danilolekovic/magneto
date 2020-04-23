@@ -26,7 +26,7 @@
     CONSTANT: "Constant",
     TRUE: "True",
     FALSE: "False",
-    COMB_COMP: "Combined Comparison", // todo
+    COMB_COMP: "Combined Comparison",
     AND: "And",
     OR: "Or",
     AND_BIT: "And Bitwise",
