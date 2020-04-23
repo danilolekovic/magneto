@@ -59,6 +59,7 @@
     RBRACK: "Right Bracket",
     LCURL: "Left Curly Brace",
     RCURL: "Right Curly Brace",
+    EQUALS: "Equals",
     EQ: "Equal To",
     NEQ: "Not Equal To",
     LT: "Less Than",

@@ -84,15 +84,47 @@ export class Lexer {
                 value = '%';
                 this.position++;
                 break;
+            case '<':
+                type = TokenType.LT;
+                value = '<';
+                this.position++;
+
+                if (this.lookAhead() == '=') {
+                    type = TokenType.LTE;
+                    value = "<=";
+                    this.position++;
+                } else if (this.lookAhead() == '<') {
+                    type = TokenType.LSTREAM;
+                    value = "<<";
+                    this.position++;
+                }
+                break;
+            case '>':
+                type = TokenType.GT;
+                value = '>';
+                this.position++;
+
+                if (this.lookAhead() == '=') {
+                    type = TokenType.GTE;
+                    value = ">=";
+                    this.position++;
+                }
+                break;
             case '^':
                 type = TokenType.CARET;
                 value = '^';
                 this.position++;
                 break;
             case '=':
-                type = TokenType.EQ;
+                type = TokenType.EQUALS;
                 value = '=';
                 this.position++;
+
+                if (this.lookAhead() == '=') {
+                    type = TokenType.EQ;
+                    value = "==";
+                    this.position++;
+                }
                 break;
             case '[':
                 type = TokenType.LBRACK;
