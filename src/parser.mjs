@@ -1,12 +1,12 @@
-import { Lexer } from "./lexer.mjs";
-import { TokenType } from "./token.mjs"
-import { Diagnostic, Location } from "./diagnostic.mjs"
-
 /*
  *  ' parser.js '
  *
  *      parsing..
  */
+
+import { Lexer } from "./lexer.mjs";
+import { TokenType } from "./token.mjs"
+import { Diagnostic, Location } from "./diagnostic.mjs"
 
  export class Parser {
     constructor(code) {
