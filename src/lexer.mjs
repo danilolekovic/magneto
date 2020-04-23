@@ -35,11 +35,6 @@ export class Lexer {
         char = char.charCodeAt(0);
 		return char >= 48 && char <= 57;
 	}
-
-	isAlphaNum(char) {
-        char = char.charCodeAt(0)
-		return this.isLetter(char) || this.isNumber(char);
-    }
     
 	isNewLine(char) {
         char = char.charCodeAt(0)
@@ -84,10 +79,87 @@ export class Lexer {
                 value = '/';
                 this.position++;
                 break;
+            case '%':
+                type = TokenType.MOD;
+                value = '%';
+                this.position++;
+                break;
+            case '^':
+                type = TokenType.CARET;
+                value = '^';
+                this.position++;
+                break;
             case '=':
                 type = TokenType.EQ;
                 value = '=';
                 this.position++;
+                break;
+            case '[':
+                type = TokenType.LBRACK;
+                value = '[';
+                this.position++;
+                break;
+            case ']':
+                type = TokenType.RBRACK;
+                value = ']';
+                this.position++;
+                break;
+            case '(':
+                type = TokenType.LPAREN;
+                value = '(';
+                this.position++;
+                break;
+            case ')':
+                type = TokenType.RPAREN;
+                value = ')';
+                this.position++;
+                break;
+            case '@':
+                type = TokenType.AT;
+                value = '@';
+                this.position++;
+                break;
+            case '.':
+                type = TokenType.DOT;
+                value = '.';
+                this.position++;
+                break;
+            case '#':
+                type = TokenType.COMMENT;
+                value = '#';
+                this.position++;
+                break;
+            case '{':
+                type = TokenType.LCURLY;
+                value = '{';
+                this.position++;
+                break;
+            case '}':
+                type = TokenType.RCURLY;
+                value = '}';
+                this.position++;
+                break;
+            case '|':
+                type = TokenType.OR_BIT;
+                value = '|';
+                this.position++;
+
+                if (this.lookAhead() == '|') {
+                    type = TokenType.OR;
+                    value = "||";
+                    this.position++;
+                }
+                break;
+            case '&':
+                type = TokenType.AND_BIT;
+                value = '&';
+                this.position++;
+
+                if (this.lookAhead() == '&') {
+                    type = TokenType.AND;
+                    value = "&&";
+                    this.position++;
+                }
                 break;
             case '\n':
                 type = TokenType.NEWLINE;
@@ -106,6 +178,11 @@ export class Lexer {
                     }
                 } else if (this.isAlpha(this.current())) {
                     type = TokenType.IDENT;
+
+                    if (this.current() == this.current().toUpperCase()) {
+                        type = TokenType.CONSTANT;
+                    }
+
                     value += this.current();
                     this.position++;
                     
@@ -130,6 +207,69 @@ export class Lexer {
                         case "def":
                             type = TokenType.DEF;
                             break;
+                        case "true":
+                            type = TokenType.TRUE;
+                            break;
+                        case "false":
+                            type = TokenType.FALSE;
+                            break;
+                        case "and":
+                            type = TokenType.AND;
+                            break;
+                        case "or":
+                            type = TokenType.OR;
+                            break;
+                        case "nil":
+                            type = TokenType.NIL;
+                            break;
+                        case "end":
+                            type = TokenType.END;
+                            break;
+                        case "while":
+                            type = TokenType.WHILE;
+                            break;
+                        case "do":
+                            type = TokenType.DO;
+                            break;
+                        case "in":
+                            type = TokenType.IN;
+                            break;
+                        case "for":
+                            type = TokenType.FOR;
+                            break;
+                        case "case":
+                            type = TokenType.CASE;
+                            break;
+                        case "when":
+                            type = TokenType.WHEN;
+                            break;
+                        case "begin":
+                            type = TokenType.BEGIN;
+                            break;
+                        case "raise":
+                            type = TokenType.RAISE;
+                            break;
+                        case "rescue":
+                            type = TokenType.RESCUE;
+                            break;
+                        case "ensure":
+                            type = TokenType.ENSURE;
+                            break;
+                        case "class":
+                            type = TokenType.CLASS;
+                            break;
+                        case "include":
+                            type = TokenType.INCLUDE;
+                            break;
+                        case "extend":
+                            type = TokenType.EXTEND;
+                            break;
+                        case "module":
+                            type = TokenType.MODULE;
+                            break;
+                        case "self":
+                            type = TokenType.SELF;
+                            break;
                     }
                 } else if (this.isWS(this.current())) {
                     while (this.isWS(this.current())) {
@@ -145,7 +285,7 @@ export class Lexer {
     }
 };
 
-let lexer = new Lexer("def a = 123");
+let lexer = new Lexer("def Const = 123");
 var tokens = [];
 var token = lexer.tokenize();
 
