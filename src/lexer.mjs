@@ -11,8 +11,7 @@ export class Lexer {
     constructor(code) {
         this.code = code;
         this.position = 0;
-        this.col = 1;
-        this.line = 1;
+        this.location = new Location(1, 1);
         this.diagnosis = [];
     }
 
@@ -61,223 +60,223 @@ export class Lexer {
         switch (this.current()) {
             case '\0':
                 type = TokenType.EOF;
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '+':
                 type = TokenType.ADD;
                 value = '+';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '-':
                 type = TokenType.SUB;
                 value = '-';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '*':
                 type = TokenType.MUL;
                 value = '*';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '/':
                 type = TokenType.DIV;
                 value = '/';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '%':
                 type = TokenType.MOD;
                 value = '%';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '<':
                 type = TokenType.LT;
                 value = '<';
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 if (this.current() == '=') {
                     type = TokenType.LTE;
                     value = "<=";
-                    this.col++;
+                    this.location.col++;
                     this.position++;
 
                     if (this.current() == '>') {
                         type = TokenType.COMB_COMP;
                         value = "<=>";
-                        this.col++;
+                        this.location.col++;
                         this.position++;
                     }
                 } else if (this.current() == '<') {
                     type = TokenType.LSTREAM;
                     value = "<<";
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
                 break;
             case '>':
                 type = TokenType.GT;
                 value = '>';
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 if (this.current() == '=') {
                     type = TokenType.GTE;
                     value = ">=";
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
                 break;
             case '^':
                 type = TokenType.CARET;
                 value = '^';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '=':
                 type = TokenType.EQUALS;
                 value = '=';
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 if (this.current() == '=') {
                     type = TokenType.EQ;
                     value = "==";
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
                 break;
             case '[':
                 type = TokenType.LBRACK;
                 value = '[';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case ']':
                 type = TokenType.RBRACK;
                 value = ']';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '(':
                 type = TokenType.LPAREN;
                 value = '(';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case ')':
                 type = TokenType.RPAREN;
                 value = ')';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '@':
                 type = TokenType.AT;
                 value = '@';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '.':
                 type = TokenType.DOT;
                 value = '.';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '#':
                 type = TokenType.COMMENT;
                 value = '#';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '{':
                 type = TokenType.LCURLY;
                 value = '{';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '}':
                 type = TokenType.RCURLY;
                 value = '}';
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '|':
                 type = TokenType.OR_BIT;
                 value = '|';
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 if (this.current() == '|') {
                     type = TokenType.OR;
                     value = "||";
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
                 break;
             case '&':
                 type = TokenType.AND_BIT;
                 value = '&';
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 if (this.current() == '&') {
                     type = TokenType.AND;
                     value = "&&";
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
                 break;
             case '\n':
                 type = TokenType.NEWLINE;
                 value = "\\n";
-                this.col = 0;
-                this.line++;
+                this.location.col = 0;
+                this.location.line++;
                 this.position++;
                 break;
             case '\"':
                 type = TokenType.STRING;
                 value = "";
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 while (this.current() != '\"') {
                     value += this.current();
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
 
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             case '\'':
                 type = TokenType.STRING;
                 value = "";
-                this.col++;
+                this.location.col++;
                 this.position++;
 
                 while (this.current() != '\'') {
                     value += this.current();
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                 }
 
-                this.col++;
+                this.location.col++;
                 this.position++;
                 break;
             default:
                 if (this.isNumber(this.current())) {
                     type = TokenType.DIGIT;
                     value += this.current();
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                     
                     while (this.isNumber(this.current())) {
                         value += this.current();
-                        this.col++;
+                        this.location.col++;
                         this.position++;
                     }
                 } else if (this.isAlpha(this.current())) {
@@ -288,12 +287,12 @@ export class Lexer {
                     }
 
                     value += this.current();
-                    this.col++;
+                    this.location.col++;
                     this.position++;
                     
                     while (this.isAlphaNum(this.current())) {
                         value += this.current();
-                        this.col++;
+                        this.location.col++;
                         this.position++;
                     }
 
@@ -379,38 +378,17 @@ export class Lexer {
                     }
                 } else if (this.isWS(this.current())) {
                     while (this.isWS(this.current())) {
-                        this.col++;
+                        this.location.col++;
                         this.position++;
                     }
 
                     type = TokenType.WS;
                     value = "WS";
                 } else {
-                    this.diagnosis.push(new Diagnostic(new Location(this.line, this.col), "Unknown symbol"));
+                    this.diagnosis.push(new Diagnostic(new Location(this.location.line, this.location.col), "Unknown symbol"));
                 }
         }
 
         return new Token(type, value);
     }
 };
-
-let lexer = new Lexer("x <=> 5\n");
-var tokens = [];
-var token = lexer.tokenize();
-
-while (token.type != TokenType.EOF) {
-    if (lexer.diagnosis.length > 0) {
-        for (var diag in lexer.diagnosis) {
-            console.log(lexer.diagnosis[diag].toString());
-        }
-
-        break;
-    }
-
-    tokens.push(token);
-    token = lexer.tokenize();
-}
-
-for (var t in tokens) {
-    console.log(tokens[t].display());
-}
