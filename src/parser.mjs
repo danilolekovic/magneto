@@ -84,6 +84,8 @@ import { Diagnostic, Location } from "./diagnostic.mjs"
                 break;
             case TokenType.NEWLINE:
                 break;
+            default:
+                this.diagnosis.push(new Diagnostic(new Location(this.location.line, this.location.col), "Expected statement"));
         }
     }
 
