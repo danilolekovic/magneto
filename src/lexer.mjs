@@ -150,6 +150,19 @@ export class Lexer {
                     this.position++;
                 }
                 break;
+            case '!':
+                type = TokenType.NOT;
+                value = '!';
+                this.location.col++;
+                this.position++;
+
+                if (this.current() == '=') {
+                    type = TokenType.NEQ;
+                    value = "!=";
+                    this.location.col++;
+                    this.position++;
+                }
+                break;
             case '[':
                 type = TokenType.LBRACK;
                 value = '[';

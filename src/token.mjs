@@ -62,6 +62,7 @@
     EQUALS: "Equals",
     EQ: "Equal To",
     NEQ: "Not Equal To",
+    NOT: "Not",
     LT: "Less Than",
     GT: "Greater Than",
     LTE: "Less Than / Equal To",
