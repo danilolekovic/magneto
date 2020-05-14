@@ -68,3 +68,48 @@ export class Nil extends Node {
         return "null";
     }
 }
+
+export class If extends Node {
+    constructor(condition, body, chain) {
+        super("If Statement");
+        this.condition = condition;
+        this.body = body;
+        this.chain = chain;
+
+        /* example of a chain:
+        *
+        *  [{
+        *       type: 'elsif',
+        *       condition: [Expression],
+        *       body: [Node]
+        *  }]
+        *
+        */ 
+    }
+
+    generate() {
+        var codeGen = "if (" + this.condition.generate() + ") {";
+        
+        for (var node in this.body) {
+            var nodeObj = this.body[node];
+
+            codeGen += nodeObj.generate();
+        }
+
+        codeGen += "}";
+
+        if (this.chain != undefined) {
+            for (var chainNode in this.chain) {
+                var chainObj = this.chain[chainNode];
+
+                if (this.chain.type == "elsif") {
+                    codeGen += "else if (" + chainObj.condition.generate() + ") { " + chainObj.body.generate() + "}";
+                } else if (this.chain.type == "else") {
+                    codeGen += "else {" + chainObj.body.generate() + "}";
+                }
+            }
+        }
+
+        return codeGen;
+    }
+}
